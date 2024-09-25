@@ -1,5 +1,7 @@
 # tryon-diffusion
 
+The unofficial implementation of the research paper "The Tale of Two Unets" by Google Research Team
+
 ## Citation
 
 ```bibtex
