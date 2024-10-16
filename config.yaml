@@ -1,0 +1,48 @@
+seed: 42
+
+model:
+  encoder:
+    _target_: mm_vto.models.Encoder
+  decoder:
+    _target_: mm_vto.models.Decoder
+  dit_blocks:
+    _target_: mm_vto.models.DiTBlocks
+
+data:
+  train:
+    _target_: mm_vto.data.MMVTODataset
+    split: train
+    # chto-to esche
+  val:
+    _target_: mm_vto.data.MMVTODataset
+    split: val
+    # chto-to esche
+  num_workers: 4
+
+training:
+  num_epochs: 100
+  batch_size: 32
+  precision: 16  # or 32 for full precision
+  gradient_clip_val: 1.0
+
+optimizer:
+  _target_: torch.optim.Adam
+  lr: 0.001
+
+scheduler:
+  _target_: torch.optim.lr_scheduler.CosineAnnealingLR
+  T_max: ${training.num_epochs}
+
+wandb:
+  project_name: "mm-vto"
+
+checkpointing:
+  save_dir: "checkpoints"
+  save_top_k: 3
+  monitor: "val_loss"
+  mode: "min"
+  save_last: True
+  save_weights_only: True
+  save_on_train_end: True
+  every_n_train_steps: 1000
+  every_n_epochs: 1
